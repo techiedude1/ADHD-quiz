@@ -513,12 +513,13 @@
                     });
 
                     // --- Add detailed feedback to the summary section at the bottom ---
+                    // *** REMOVED CSS COMMENTS FROM THIS TEMPLATE LITERAL ***
                      feedbackHtml.push(`
-                         <div class="p-4 bg-red-50 rounded-md border border-red-200"> {/* Light red background for summary item */}
-                             <p class="font-semibold text-feedback-summary-q">${index + 1}. ${qData.questionText}</p> {/* Dark red text */}
-                             <p class="text-feedback-summary-user mt-1">Your answer: "${userAnswerText}"</p> {/* Dark gray text */}
-                             <p class="text-feedback-summary-correct mt-1">Correct answer: "${correctChoiceText}"</p> {/* Dark green text */}
-                             <p class="text-feedback-summary-expl mt-2 text-sm"><em>Explanation:</em> ${qData.explanation}</p> {/* Medium gray text */}
+                         <div class="p-4 bg-red-50 rounded-md border border-red-200">
+                             <p class="font-semibold text-feedback-summary-q">${index + 1}. ${qData.questionText}</p>
+                             <p class="text-feedback-summary-user mt-1">Your answer: "${userAnswerText}"</p>
+                             <p class="text-feedback-summary-correct mt-1">Correct answer: "${correctChoiceText}"</p>
+                             <p class="text-feedback-summary-expl mt-2 text-sm"><em>Explanation:</em> ${qData.explanation}</p>
                          </div>
                      `);
                 }
