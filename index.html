@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADHD Medications NAPLEX Quiz (Randomized)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        /* Custom styles for radio buttons and hover effects */
+        .quiz-option label {
+            display: block;
+            padding: 12px 16px;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff; /* Bright text for options */
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .quiz-option input[type="radio"] {
+            display: none; /* Hide the actual radio button */
+        }
+        .quiz-option label:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-color: #a78bfa; /* Light purple border on hover */
+        }
+        .quiz-option input[type="radio"]:checked + label {
+            background-color: #8b5cf6; /* Purple background when selected */
+            border-color: #ffffff; /* White border when selected */
+            color: #ffffff; /* Ensure text stays bright when selected */
+            font-weight: 600;
+        }
+        /* Style for correct/incorrect feedback */
+        .correct-answer-display { /* Used to highlight correct option after submission */
+             background-color: rgba(74, 222, 128, 0.3) !important; /* Light green */
+             border-color: #22c55e !important; /* Green border */
+             color: #ffffff !important; /* Ensure text is bright */
+        }
+        .user-incorrect-choice { /* Used to highlight user's wrong choice */
+             background-color: rgba(248, 113, 113, 0.3) !important; /* Light red */
+             border-color: #ef4444 !important; /* Red border */
+             color: #ffffff !important; /* Ensure text is bright */
+        }
+         .feedback-box {
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 4px;
+            border-left-width: 5px;
+         }
+        .feedback-incorrect {
+            background-color: rgba(248, 113, 113, 0.2); /* Light red */
+            border-left-color: #ef4444; /* Red border */
+            color: #fef2f2; /* Bright text (light red/white) */
+        }
+        .feedback-correct-summary { /* For summary section */
+             background-color: rgba(74, 222, 128, 0.2); /* Light green */
+             border-left: 5px solid #22c55e; /* Green border */
+             padding: 10px;
+             margin-top: 5px;
+             border-radius: 4px;
+             color: #f0fdf4; /* Bright text (light green/white) */
+        }
+        .explanation {
+            margin-top: 8px;
+            font-style: italic;
+            color: #e0e7ff; /* Lighter text for explanation - still bright */
+        }
+        /* General text colors */
+        .text-bright {
+             color: #ffffff;
+        }
+        .text-bright-accent {
+             color: #e0e7ff; /* Slightly softer bright color */
+        }
+        .text-bright-red {
+            color: #fecaca; /* Lighter red for text */
+        }
+         .text-bright-green {
+            color: #bbf7d0; /* Lighter green for text */
+        }
+        .text-bright-indigo {
+             color: #c7d2fe; /* Lighter indigo for text */
+        }
+
+
+        /* Button hover effect */
+        .submit-button {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        /* Password prompt styling */
+        #password-prompt {
+            background: rgba(0, 0, 0, 0.7); /* Dark overlay */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #password-box {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            color: #374151; /* Darker text for contrast on white */
+        }
+         #password-box h2 {
+             color: #1f2937; /* Even darker for heading */
+         }
+         #password-error {
+             color: #ef4444; /* Standard red for error on white */
+         }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center px-4 py-8">
+
+    <div id="password-prompt" class="fixed inset-0 z-50">
+        <div id="password-box" class="w-full max-w-sm text-center">
+            <h2 class="text-2xl font-bold mb-4">Enter Password</h2>
+            <input type="password" id="password-input" class="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-900" placeholder="Password">
+            <button id="password-submit" class="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition duration-300 submit-button">Enter Quiz</button>
+            <p id="password-error" class="text-sm mt-2 hidden">Incorrect Password.</p>
+        </div>
+    </div>
+
+    <div id="quiz-container" class="w-full max-w-3xl bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg p-6 md:p-8 rounded-xl shadow-2xl hidden">
+        <h1 class="text-3xl md:text-4xl font-bold text-bright text-center mb-8">ADHD Medications NAPLEX Review (Randomized)</h1>
+
+        <form id="quiz-form">
+            </form>
+
+        <div id="submit-button-container" class="text-center mt-10" style="display: none;">
+             <button type="submit" form="quiz-form" class="bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white font-bold py-3 px-8 rounded-full shadow-lg submit-button">
+                 Submit Quiz
+             </button>
+         </div>
+
+        <div id="results-container" class="mt-10 text-center hidden p-6 bg-white bg-opacity-20 rounded-lg shadow-lg">
+            <h2 class="text-2xl font-bold text-bright mb-4">Quiz Results</h2>
+            <p id="score" class="text-xl text-bright font-semibold mb-6"></p> {/* Applied text-bright */}
+            <div id="feedback-summary" class="text-left space-y-4">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Configuration ---
+        const CORRECT_PASSWORD = "naplex2025"; // IMPORTANT: Change this password!
+        const NUM_QUESTIONS_TO_DISPLAY = 15;
+
+        // --- Full Question Bank ---
+        const allQuizData = [
+             {
+                questionText: "A 10-year-old patient diagnosed with ADHD is starting treatment with methylphenidate (Concerta). Which of the following counseling points is MOST important regarding its mechanism and common side effects?",
+                choices: [
+                    { text: "It's a non-stimulant that primarily increases serotonin; common side effects include drowsiness and dizziness.", isCorrect: false },
+                    { text: "It primarily blocks dopamine and norepinephrine reuptake; common side effects include insomnia and decreased appetite.", isCorrect: true },
+                    { text: "It works by selectively inhibiting norepinephrine reuptake; it may cause significant weight gain.", isCorrect: false },
+                    { text: "It enhances GABAergic transmission; sedation is the most frequent adverse effect.", isCorrect: false }
+                ],
+                explanation: "Methylphenidate is a CNS stimulant that blocks the reuptake of norepinephrine (NE) and dopamine (DA). Common side effects include insomnia, decreased appetite, headache, and irritability. Atomoxetine is the selective NE reuptake inhibitor (Choice C description). Non-stimulants like guanfacine/clonidine can cause drowsiness (Choice A description partially). GABAergic agents are not primary ADHD treatments (Choice D)."
+            },
+            {
+                questionText: "Atomoxetine (Strattera) is prescribed for an adult patient with ADHD and a history of substance abuse. Which statement accurately reflects a key characteristic of atomoxetine?",
+                choices: [
+                    { text: "It is a Schedule II controlled substance with a high potential for abuse.", isCorrect: false },
+                    { text: "It has an immediate onset of action, typically within 1-2 hours.", isCorrect: false },
+                    { text: "It carries a boxed warning regarding the risk of suicidal ideation in children/adolescents and warning for severe liver injury.", isCorrect: true },
+                    { text: "It requires gradual dose titration over several weeks when discontinuing.", isCorrect: false }
+                ],
+                explanation: "Atomoxetine is a non-stimulant SNRI, not a controlled substance (A). Its onset is delayed (weeks) (B). It has BBW for suicidal ideation and warning for liver injury (C). Abrupt discontinuation is generally possible (D)."
+            },
+            {
+                questionText: "Lisdexamfetamine (Vyvanse) is unique among stimulant medications primarily due to its:",
+                choices: [
+                    { text: "Availability as a transdermal patch formulation.", isCorrect: false },
+                    { text: "Mechanism as a selective norepinephrine reuptake inhibitor.", isCorrect: false },
+                    { text: "Prodrug design, requiring enzymatic conversion to dextroamphetamine for activity.", isCorrect: true },
+                    { text: "Indication for use only in patients older than 18 years.", isCorrect: false }
+                ],
+                explanation: "Lisdexamfetamine is a prodrug converted to dextroamphetamine, potentially reducing abuse liability via certain routes and providing smoother delivery (C). Methylphenidate has a patch (Daytrana) (A). Atomoxetine is an SNRI (B). Vyvanse is approved for ages 6+ (D)."
+            },
+            {
+                questionText: "A patient is being counseled on Guanfacine ER (Intuniv). Which is the MOST likely mechanism of action and a common side effect?",
+                choices: [
+                    { text: "Dopamine agonist; Nausea", isCorrect: false },
+                    { text: "Selective alpha-2A adrenergic agonist; Somnolence", isCorrect: true },
+                    { text: "Serotonin-norepinephrine reuptake inhibitor; Insomnia", isCorrect: false },
+                    { text: "Monoamine oxidase inhibitor; Hypertensive crisis", isCorrect: false }
+                ],
+                explanation: "Guanfacine ER is a selective alpha-2A adrenergic agonist. Common side effects include somnolence, dizziness, and hypotension (B)."
+            },
+            {
+                questionText: "Which ADHD medication carries a specific warning regarding use within 14 days of MAOIs due to hypertensive crisis risk?",
+                choices: [
+                    { text: "Guanfacine ER (Intuniv)", isCorrect: false },
+                    { text: "Atomoxetine (Strattera)", isCorrect: false },
+                    { text: "Methylphenidate (Ritalin LA)", isCorrect: true },
+                    { text: "Clonidine ER (Kapvay)", isCorrect: false }
+                ],
+                explanation: "Stimulants (methylphenidate, amphetamines) are contraindicated with MAOIs due to the risk of hypertensive crisis from excessive norepinephrine buildup (C). While caution is needed with atomoxetine, the contraindication is strongest for stimulants. Alpha-2 agonists do not share this specific interaction (A, D)."
+            },
+            {
+                questionText: "A parent reports their child taking mixed amphetamine salts (Adderall XR) experiences significant appetite suppression leading to weight loss. Which is an appropriate initial management strategy?",
+                choices: [
+                    { text: "Immediately discontinue Adderall XR and switch to atomoxetine.", isCorrect: false },
+                    { text: "Administer the dose after a high-calorie breakfast or add a high-calorie snack/meal before bedtime.", isCorrect: true },
+                    { text: "Increase the Adderall XR dose to overcome the side effect.", isCorrect: false },
+                    { text: "Add cyproheptadine concurrently to stimulate appetite.", isCorrect: false }
+                ],
+                explanation: "Managing stimulant-induced appetite suppression often involves timing the dose (e.g., after meals) or ensuring adequate caloric intake during times the medication effect is lower (e.g., evening) (B). Switching medication (A) is an option if initial strategies fail. Increasing the dose (C) would likely worsen the effect. While cyproheptadine (D) can stimulate appetite, it's not a first-line strategy and adds another medication."
+            },
+            {
+                questionText: "Which formulation of methylphenidate utilizes an osmotic-release oral system (OROS) for extended delivery?",
+                choices: [
+                    { text: "Ritalin LA", isCorrect: false },
+                    { text: "Metadate CD", isCorrect: false },
+                    { text: "Concerta", isCorrect: true },
+                    { text: "Daytrana", isCorrect: false }
+                ],
+                explanation: "Concerta uses the OROS delivery system, which provides an initial immediate release followed by a controlled, ascending release pattern throughout the day (C). Ritalin LA and Metadate CD use different bead technologies (A, B). Daytrana is a transdermal patch (D)."
+            },
+            {
+                questionText: "A patient taking lisdexamfetamine (Vyvanse) reports difficulty sleeping. The dose is taken at 7 AM. Which counseling point is MOST appropriate?",
+                choices: [
+                    { text: "Take the dose later in the day, around noon.", isCorrect: false },
+                    { text: "Split the capsule contents and take half in the morning and half at noon.", isCorrect: false },
+                    { text: "Ensure the dose is taken as early in the morning as possible; discuss potential dose reduction or alternative medication with the prescriber if insomnia persists.", isCorrect: true },
+                    { text: "Take an over-the-counter sleep aid like diphenhydramine every night.", isCorrect: false }
+                ],
+                explanation: "Stimulant-induced insomnia is best managed by taking the dose early in the morning (C). Taking it later (A) or splitting doses (B - not recommended for Vyvanse's mechanism) would likely worsen insomnia. Chronic use of OTC sleep aids (D) is not ideal."
+            },
+            {
+                questionText: "Which non-stimulant ADHD medication requires monitoring for potential increases in heart rate and blood pressure?",
+                choices: [
+                    { text: "Clonidine ER (Kapvay)", isCorrect: false },
+                    { text: "Guanfacine ER (Intuniv)", isCorrect: false },
+                    { text: "Atomoxetine (Strattera)", isCorrect: true },
+                    { text: "Viloxazine ER (Qelbree)", isCorrect: true } // Both are technically correct
+                ],
+                 explanation: "Atomoxetine (and Viloxazine) works by inhibiting norepinephrine reuptake, which can lead to increases in heart rate and blood pressure (C is primary answer, but acknowledge Viloxazine). Alpha-2 agonists like clonidine and guanfacine typically cause decreases in HR and BP (A, B)."
+            },
+             {
+                 questionText: "A patient is transitioning from immediate-release methylphenidate (Ritalin) 10mg TID to Concerta. What is a reasonable starting dose range for Concerta based on the previous total daily dose of Ritalin?",
+                 choices: [
+                     { text: "Concerta 10mg once daily", isCorrect: false },
+                     { text: "Concerta 18mg or 36mg once daily", isCorrect: true },
+                     { text: "Concerta 54mg once daily", isCorrect: false },
+                     { text: "Concerta 72mg once daily", isCorrect: false }
+                 ],
+                 explanation: "The total daily dose of Ritalin is 30mg (10mg TID). Conversion guidelines often suggest starting Concerta at 18mg for patients on Ritalin 5mg BID/TID, and 36mg for patients on Ritalin 10mg BID/TID. Therefore, 18mg or 36mg is the appropriate starting range (B)."
+             },
+            {
+                questionText: "Which specific ADHD medication, known for its prodrug design, is also available as a chewable tablet formulation?",
+                choices: [
+                     { text: "Atomoxetine (Strattera)", isCorrect: false },
+                     { text: "Methylphenidate ER (Concerta)", isCorrect: false },
+                     { text: "Lisdexamfetamine (Vyvanse)", isCorrect: true },
+                     { text: "Guanfacine ER (Intuniv)", isCorrect: false }
+                ],
+                explanation: "Lisdexamfetamine (Vyvanse), a prodrug stimulant, is available as both capsules and chewable tablets, offering flexibility for administration (C)."
+            },
+            {
+                questionText: "The Daytrana (methylphenidate transdermal system) patch should be applied to which area, and for how long should it typically be worn?",
+                choices: [
+                    { text: "Upper arm; 12 hours", isCorrect: false },
+                    { text: "Hip area; 9 hours", isCorrect: true },
+                    { text: "Chest; 24 hours", isCorrect: false },
+                    { text: "Lower back; 16 hours", isCorrect: false }
+                ],
+                explanation: "The Daytrana patch should be applied to the hip area, alternating sides daily, approximately 2 hours before the desired effect onset, and worn for a maximum of 9 hours (B)."
+            },
+             {
+                 questionText: "Agents that significantly increase gastric pH (like certain antacids or PPIs) can potentially increase the absorption and levels of which class of ADHD medications?",
+                 choices: [
+                     { text: "Alpha-2 agonists (e.g., Guanfacine)", isCorrect: false },
+                     { text: "Amphetamines (e.g., Adderall, Vyvanse)", isCorrect: true },
+                     { text: "Methylphenidates (e.g., Ritalin, Concerta)", isCorrect: false },
+                     { text: "Selective Norepinephrine Reuptake Inhibitors (e.g., Atomoxetine)", isCorrect: false }
+                 ],
+                 explanation: "Amphetamine absorption is pH-dependent. Increasing gastric pH (making it less acidic) can increase the absorption of amphetamine salts, potentially leading to higher levels and increased side effects (B)."
+             },
+            {
+                questionText: "Viloxazine ER (Qelbree) is a newer non-stimulant medication for ADHD. What is its primary mechanism of action?",
+                choices: [
+                    { text: "Selective alpha-2A adrenergic agonist", isCorrect: false },
+                    { text: "Dopamine and norepinephrine reuptake inhibitor", isCorrect: false },
+                    { text: "Selective norepinephrine reuptake inhibitor (SNRI)", isCorrect: true },
+                    { text: "Monoamine oxidase inhibitor", isCorrect: false }
+                ],
+                explanation: "Viloxazine ER (Qelbree) is classified as a selective norepinephrine reuptake inhibitor (SNRI), similar in mechanism class to atomoxetine, but with structural differences (C)."
+            },
+            {
+                questionText: "Which of the following is a potential cardiovascular risk associated with stimulant use that requires screening and monitoring?",
+                choices: [
+                    { text: "Significant bradycardia", isCorrect: false },
+                    { text: "Hypotension", isCorrect: false },
+                    { text: "QTc prolongation", isCorrect: false },
+                    { text: "Increased blood pressure and heart rate", isCorrect: true }
+                ],
+                explanation: "Stimulant medications can cause modest increases in average heart rate and blood pressure. Patients should be screened for pre-existing cardiac conditions, and HR/BP should be monitored regularly during treatment (D)."
+            }
+        ];
+
+        // --- DOM Elements ---
+        const passwordPrompt = document.getElementById('password-prompt');
+        const passwordInput = document.getElementById('password-input');
+        const passwordSubmit = document.getElementById('password-submit');
+        const passwordError = document.getElementById('password-error');
+        const quizContainer = document.getElementById('quiz-container');
+        const quizForm = document.getElementById('quiz-form');
+        const resultsContainer = document.getElementById('results-container');
+        const scoreElement = document.getElementById('score');
+        const feedbackSummaryElement = document.getElementById('feedback-summary');
+        const submitButtonContainer = document.getElementById('submit-button-container');
+
+        // --- Global Variables ---
+        let displayedQuizData = []; // To store the shuffled questions actually displayed
+
+        // --- Utility Functions ---
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // --- Core Functions ---
+        function loadQuiz() {
+            let shuffledQuestions = [...allQuizData];
+            shuffleArray(shuffledQuestions);
+            displayedQuizData = shuffledQuestions.slice(0, NUM_QUESTIONS_TO_DISPLAY);
+            quizForm.innerHTML = '';
+
+            displayedQuizData.forEach((qData, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'mb-8 p-6 bg-white bg-opacity-20 rounded-lg shadow-lg question-block';
+                questionDiv.dataset.questionIndex = index;
+
+                const questionTextPara = document.createElement('p');
+                questionTextPara.className = 'text-lg font-semibold text-bright mb-4'; // Applied text-bright
+                questionTextPara.textContent = `${index + 1}. ${qData.questionText}`;
+                questionDiv.appendChild(questionTextPara);
+
+                let shuffledChoices = [...qData.choices];
+                shuffleArray(shuffledChoices);
+
+                const choicesDiv = document.createElement('div');
+                choicesDiv.className = 'space-y-3';
+                shuffledChoices.forEach((choice, choiceIndex) => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'quiz-option';
+
+                    const radioInput = document.createElement('input');
+                    radioInput.type = 'radio';
+                    radioInput.id = `q${index}_c${choiceIndex}`;
+                    radioInput.name = `q${index}`;
+                    radioInput.value = choice.isCorrect ? 'correct' : 'incorrect';
+                    radioInput.dataset.choiceText = choice.text;
+
+                    const label = document.createElement('label');
+                    label.htmlFor = `q${index}_c${choiceIndex}`;
+                    label.textContent = choice.text; // Label text color is handled by .quiz-option label CSS
+
+                    optionDiv.appendChild(radioInput);
+                    optionDiv.appendChild(label);
+                    choicesDiv.appendChild(optionDiv);
+                });
+                questionDiv.appendChild(choicesDiv);
+
+                 const feedbackDiv = document.createElement('div');
+                 feedbackDiv.id = `feedback-q${index}`;
+                 feedbackDiv.className = 'mt-4';
+                 questionDiv.appendChild(feedbackDiv);
+
+                quizForm.appendChild(questionDiv);
+            });
+             submitButtonContainer.style.display = 'block';
+        }
+
+        function handlePasswordSubmit() {
+            if (passwordInput.value === CORRECT_PASSWORD) {
+                passwordPrompt.style.display = 'none';
+                quizContainer.classList.remove('hidden');
+                loadQuiz();
+            } else {
+                passwordError.classList.remove('hidden');
+                passwordInput.value = '';
+            }
+        }
+
+        function handleQuizSubmit(event) {
+            event.preventDefault();
+
+            let score = 0;
+            const feedbackHtml = [];
+
+            quizForm.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.disabled = true;
+            });
+
+            displayedQuizData.forEach((qData, index) => {
+                const questionBlock = quizForm.querySelector(`.question-block[data-question-index="${index}"]`);
+                const selectedRadio = questionBlock.querySelector(`input[name="q${index}"]:checked`);
+                const feedbackElement = questionBlock.querySelector(`#feedback-q${index}`);
+                feedbackElement.innerHTML = '';
+
+                let userAnswerText = "No answer";
+                let isCorrect = false;
+
+                if (selectedRadio) {
+                    userAnswerText = selectedRadio.dataset.choiceText;
+                    isCorrect = selectedRadio.value === 'correct';
+                }
+
+                 const correctChoice = qData.choices.find(c => c.isCorrect);
+                 const correctChoiceText = correctChoice ? correctChoice.text : 'N/A';
+
+                if (isCorrect) {
+                    score++;
+                     if(selectedRadio) {
+                        selectedRadio.parentElement.classList.add('correct-answer-display');
+                     }
+                } else {
+                    const feedbackDiv = document.createElement('div');
+                    feedbackDiv.className = 'feedback-box feedback-incorrect';
+
+                    const explanationText = `<div class="explanation">${qData.explanation}</div>`;
+                    // Added quotes around the correct answer text for clarity
+                    feedbackDiv.innerHTML = `Incorrect. The correct answer was: "${correctChoiceText}"` + explanationText;
+                    feedbackElement.appendChild(feedbackDiv);
+
+                     if (selectedRadio) {
+                         selectedRadio.parentElement.classList.add('user-incorrect-choice');
+                     }
+
+                    const allRadiosInQuestion = questionBlock.querySelectorAll(`input[name="q${index}"]`);
+                    allRadiosInQuestion.forEach(radio => {
+                        if (radio.value === 'correct') {
+                            radio.parentElement.classList.add('correct-answer-display');
+                        }
+                    });
+
+                    // Added quotes around answers in summary for clarity
+                     feedbackHtml.push(`
+                         <div class="p-4 bg-red-100 bg-opacity-30 rounded-md border border-red-300">
+                             <p class="font-semibold text-bright-red">${index + 1}. ${qData.questionText}</p> {/* Used text-bright-red */}
+                             <p class="text-bright mt-1">Your answer: "${userAnswerText}"</p> {/* Used text-bright */}
+                             <p class="text-bright-green mt-1">Correct answer: "${correctChoiceText}"</p> {/* Used text-bright-green */}
+                             <p class="text-bright-indigo mt-2 text-sm"><em>Explanation:</em> ${qData.explanation}</p> {/* Used text-bright-indigo */}
+                         </div>
+                     `);
+                }
+            });
+
+            // --- SCORE DISPLAY UPDATE ---
+            // Calculate percentage
+            const percentage = Math.round((score / NUM_QUESTIONS_TO_DISPLAY) * 100);
+            // Display raw score and percentage
+            scoreElement.textContent = `You scored ${score} out of ${NUM_QUESTIONS_TO_DISPLAY} (${percentage}%)!`;
+            // --- END SCORE DISPLAY UPDATE ---
+
+
+            if (feedbackHtml.length > 0) {
+                 feedbackSummaryElement.innerHTML = `<h3 class="text-xl font-semibold text-bright mb-3">Review Incorrect Answers:</h3>` + feedbackHtml.join(''); // Applied text-bright
+            } else {
+                 feedbackSummaryElement.innerHTML = `<p class="text-bright-green font-semibold feedback-correct-summary">Congratulations! You got all questions correct!</p>`; // Applied text-bright-green
+            }
+
+            resultsContainer.classList.remove('hidden');
+            resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+
+        // --- Event Listeners ---
+        passwordSubmit.addEventListener('click', handlePasswordSubmit);
+        passwordInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                handlePasswordSubmit();
+            }
+        });
+        quizForm.addEventListener('submit', handleQuizSubmit);
+
+    </script>
+
+</body>
+</html>
