@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADHD Medications NAPLEX Quiz (Randomized)</title>
+    <title>ADHD Medications NAPLEX Quiz (Randomized - Light)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,17 +11,30 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            /* Light background gradient */
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
         }
-        /* Custom styles for radio buttons and hover effects */
+        /* Container styling */
+        #quiz-container {
+             background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent white */
+             backdrop-filter: blur(10px);
+             border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+         #results-container {
+             background-color: rgba(255, 255, 255, 0.7); /* Slightly transparent white for results */
+             backdrop-filter: blur(8px);
+             border: 1px solid rgba(255, 255, 255, 0.15);
+         }
+
+        /* Custom styles for radio buttons and hover effects - Light Theme */
         .quiz-option label {
             display: block;
             padding: 12px 16px;
-            border: 2px solid transparent;
+            border: 2px solid #e5e7eb; /* Light gray border */
             border-radius: 8px;
             margin-bottom: 8px;
-            background-color: rgba(255, 255, 255, 0.1);
-            color: #ffffff; /* Bright text for options */
+            background-color: #ffffff; /* White background for options */
+            color: #374151; /* Dark gray text */
             cursor: pointer;
             transition: all 0.3s ease;
         }
@@ -29,79 +42,97 @@
             display: none; /* Hide the actual radio button */
         }
         .quiz-option label:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-            border-color: #a78bfa; /* Light purple border on hover */
+            background-color: #f3f4f6; /* Very light gray on hover */
+            border-color: #a78bfa; /* Purple border on hover */
         }
         .quiz-option input[type="radio"]:checked + label {
-            background-color: #8b5cf6; /* Purple background when selected */
-            border-color: #ffffff; /* White border when selected */
-            color: #ffffff; /* Ensure text stays bright when selected */
+            background-color: #ede9fe; /* Light purple background when selected */
+            border-color: #8b5cf6; /* Purple border when selected */
+            color: #5b21b6; /* Darker purple text when selected */
             font-weight: 600;
         }
-        /* Style for correct/incorrect feedback */
-        .correct-answer-display { /* Used to highlight correct option after submission */
-             background-color: rgba(74, 222, 128, 0.3) !important; /* Light green */
+
+        /* Style for correct/incorrect feedback - Light Theme */
+        .correct-answer-display { /* Used to highlight correct option's label after submission */
+             background-color: #dcfce7 !important; /* Light green */
              border-color: #22c55e !important; /* Green border */
-             color: #ffffff !important; /* Ensure text is bright */
+             color: #166534 !important; /* Dark green text */
         }
-        .user-incorrect-choice { /* Used to highlight user's wrong choice */
-             background-color: rgba(248, 113, 113, 0.3) !important; /* Light red */
+        .user-incorrect-choice { /* Used to highlight user's wrong choice label after submission */
+             background-color: #fee2e2 !important; /* Light red */
              border-color: #ef4444 !important; /* Red border */
-             color: #ffffff !important; /* Ensure text is bright */
+             color: #991b1b !important; /* Dark red text */
         }
-         .feedback-box {
+         .feedback-box { /* General container for feedback text below options */
             padding: 10px;
             margin-top: 10px;
             border-radius: 4px;
             border-left-width: 5px;
          }
-        .feedback-incorrect {
-            background-color: rgba(248, 113, 113, 0.2); /* Light red */
-            border-left-color: #ef4444; /* Red border */
-            color: #fef2f2; /* Bright text (light red/white) */
+        .feedback-correct { /* Styling for the "Correct!" box */
+            background-color: #f0fdf4; /* Very light green */
+            border-left-color: #22c55e; /* Green border */
+            color: #15803d; /* Dark green text */
         }
-        .feedback-correct-summary { /* For summary section */
-             background-color: rgba(74, 222, 128, 0.2); /* Light green */
+        .feedback-incorrect { /* Styling for the "Incorrect..." box */
+            background-color: #fef2f2; /* Very light red */
+            border-left-color: #ef4444; /* Red border */
+            color: #b91c1c; /* Dark red text */
+        }
+        .feedback-correct-summary { /* For summary section if all correct */
+             background-color: #dcfce7; /* Light green */
              border-left: 5px solid #22c55e; /* Green border */
              padding: 10px;
              margin-top: 5px;
              border-radius: 4px;
-             color: #f0fdf4; /* Bright text (light green/white) */
+             color: #166534; /* Dark green text */
         }
         .explanation {
             margin-top: 8px;
             font-style: italic;
-            color: #e0e7ff; /* Lighter text for explanation - still bright */
+            color: #4b5563; /* Medium-dark gray for explanation */
         }
-        /* General text colors */
-        .text-bright {
-             color: #ffffff;
+
+        /* General text colors - Light Theme */
+        .text-title { /* For main headings */
+             color: #374151; /* Dark gray */
         }
-        .text-bright-accent {
-             color: #e0e7ff; /* Slightly softer bright color */
+        .text-question { /* For question text */
+             color: #1f2937; /* Darker gray */
         }
-        .text-bright-red {
-            color: #fecaca; /* Lighter red for text */
+         .text-results { /* For text within results box */
+             color: #374151; /* Dark gray */
+         }
+         .text-feedback-summary-header { /* "Review Incorrect Answers" */
+             color: #1f2937;
+         }
+        .text-feedback-summary-q { /* Question text in summary */
+             color: #991b1b; /* Dark red */
         }
-         .text-bright-green {
-            color: #bbf7d0; /* Lighter green for text */
+        .text-feedback-summary-user { /* User answer in summary */
+             color: #374151; /* Dark gray */
         }
-        .text-bright-indigo {
-             color: #c7d2fe; /* Lighter indigo for text */
+        .text-feedback-summary-correct { /* Correct answer in summary */
+             color: #166534; /* Dark green */
+        }
+        .text-feedback-summary-expl { /* Explanation in summary */
+             color: #4b5563; /* Medium-dark gray */
         }
 
 
         /* Button hover effect */
         .submit-button {
+            /* Gradient remains, text is white for contrast */
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
         .submit-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Softer shadow */
         }
-        /* Password prompt styling */
+
+        /* Password prompt styling (Keep as is - white box with dark text) */
         #password-prompt {
-            background: rgba(0, 0, 0, 0.7); /* Dark overlay */
+            background: rgba(0, 0, 0, 0.6); /* Slightly lighter overlay */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -110,14 +141,14 @@
             background: white;
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            color: #374151; /* Darker text for contrast on white */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            color: #374151;
         }
          #password-box h2 {
-             color: #1f2937; /* Even darker for heading */
+             color: #1f2937;
          }
          #password-error {
-             color: #ef4444; /* Standard red for error on white */
+             color: #ef4444;
          }
     </style>
 </head>
@@ -132,8 +163,8 @@
         </div>
     </div>
 
-    <div id="quiz-container" class="w-full max-w-3xl bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg p-6 md:p-8 rounded-xl shadow-2xl hidden">
-        <h1 class="text-3xl md:text-4xl font-bold text-bright text-center mb-8">ADHD Medications NAPLEX Review (Randomized)</h1>
+    <div id="quiz-container" class="w-full max-w-3xl p-6 md:p-8 rounded-xl shadow-2xl hidden">
+        <h1 class="text-3xl md:text-4xl font-bold text-title text-center mb-8">ADHD Medications NAPLEX Review (Randomized)</h1>
 
         <form id="quiz-form">
             </form>
@@ -144,9 +175,9 @@
              </button>
          </div>
 
-        <div id="results-container" class="mt-10 text-center hidden p-6 bg-white bg-opacity-20 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-bold text-bright mb-4">Quiz Results</h2>
-            <p id="score" class="text-xl text-bright font-semibold mb-6"></p> {/* Applied text-bright */}
+        <div id="results-container" class="mt-10 text-center hidden p-6 rounded-lg shadow-lg">
+            <h2 class="text-2xl font-bold text-title mb-4">Quiz Results</h2>
+            <p id="score" class="text-xl text-results font-semibold mb-6"></p>
             <div id="feedback-summary" class="text-left space-y-4">
                 </div>
         </div>
@@ -339,37 +370,43 @@
             let shuffledQuestions = [...allQuizData];
             shuffleArray(shuffledQuestions);
             displayedQuizData = shuffledQuestions.slice(0, NUM_QUESTIONS_TO_DISPLAY);
-            quizForm.innerHTML = '';
+            quizForm.innerHTML = ''; // Clear previous questions
 
             displayedQuizData.forEach((qData, index) => {
+                // Create question container
                 const questionDiv = document.createElement('div');
-                questionDiv.className = 'mb-8 p-6 bg-white bg-opacity-20 rounded-lg shadow-lg question-block';
-                questionDiv.dataset.questionIndex = index;
+                // Adjusted background for light theme
+                questionDiv.className = 'mb-8 p-6 bg-white bg-opacity-60 rounded-lg shadow-md question-block';
+                questionDiv.dataset.questionIndex = index; // Link to original data index
 
+                // Add question number and text
                 const questionTextPara = document.createElement('p');
-                questionTextPara.className = 'text-lg font-semibold text-bright mb-4'; // Applied text-bright
+                questionTextPara.className = 'text-lg font-semibold text-question mb-4'; // Use text-question class
                 questionTextPara.textContent = `${index + 1}. ${qData.questionText}`;
                 questionDiv.appendChild(questionTextPara);
 
+                // Shuffle choices for this question
                 let shuffledChoices = [...qData.choices];
                 shuffleArray(shuffledChoices);
 
+                // Add choices container
                 const choicesDiv = document.createElement('div');
                 choicesDiv.className = 'space-y-3';
+                // Create and append each choice
                 shuffledChoices.forEach((choice, choiceIndex) => {
                     const optionDiv = document.createElement('div');
-                    optionDiv.className = 'quiz-option';
+                    optionDiv.className = 'quiz-option'; // Styles defined in <style>
 
                     const radioInput = document.createElement('input');
                     radioInput.type = 'radio';
-                    radioInput.id = `q${index}_c${choiceIndex}`;
-                    radioInput.name = `q${index}`;
-                    radioInput.value = choice.isCorrect ? 'correct' : 'incorrect';
-                    radioInput.dataset.choiceText = choice.text;
+                    radioInput.id = `q${index}_c${choiceIndex}`; // Unique ID for label association
+                    radioInput.name = `q${index}`; // Group radios for the same question
+                    radioInput.value = choice.isCorrect ? 'correct' : 'incorrect'; // Store correctness
+                    radioInput.dataset.choiceText = choice.text; // Store original text for feedback
 
                     const label = document.createElement('label');
                     label.htmlFor = `q${index}_c${choiceIndex}`;
-                    label.textContent = choice.text; // Label text color is handled by .quiz-option label CSS
+                    label.textContent = choice.text; // Text color handled by CSS
 
                     optionDiv.appendChild(radioInput);
                     optionDiv.appendChild(label);
@@ -377,117 +414,145 @@
                 });
                 questionDiv.appendChild(choicesDiv);
 
+                 // Add feedback area (initially empty)
                  const feedbackDiv = document.createElement('div');
                  feedbackDiv.id = `feedback-q${index}`;
-                 feedbackDiv.className = 'mt-4';
+                 feedbackDiv.className = 'mt-4'; // Add margin top for spacing
                  questionDiv.appendChild(feedbackDiv);
 
+                // Append the whole question block to the form
                 quizForm.appendChild(questionDiv);
             });
+            // Show the submit button only after questions are loaded
              submitButtonContainer.style.display = 'block';
         }
 
         function handlePasswordSubmit() {
+            // Check if entered password matches the correct one
             if (passwordInput.value === CORRECT_PASSWORD) {
-                passwordPrompt.style.display = 'none';
-                quizContainer.classList.remove('hidden');
-                loadQuiz();
+                passwordPrompt.style.display = 'none'; // Hide password prompt
+                quizContainer.classList.remove('hidden'); // Show quiz container
+                loadQuiz(); // Load the randomized quiz questions
             } else {
-                passwordError.classList.remove('hidden');
-                passwordInput.value = '';
+                passwordError.classList.remove('hidden'); // Show error message
+                passwordInput.value = ''; // Clear incorrect password input
             }
         }
 
         function handleQuizSubmit(event) {
-            event.preventDefault();
+            event.preventDefault(); // Prevent default form submission behavior
 
-            let score = 0;
-            const feedbackHtml = [];
+            let score = 0; // Initialize score
+            const feedbackHtml = []; // Array to store feedback HTML for the summary section
 
+            // Disable all radio buttons to prevent changes after submission
             quizForm.querySelectorAll('input[type="radio"]').forEach(radio => {
                 radio.disabled = true;
             });
 
+            // Iterate through the questions that were displayed
             displayedQuizData.forEach((qData, index) => {
                 const questionBlock = quizForm.querySelector(`.question-block[data-question-index="${index}"]`);
-                const selectedRadio = questionBlock.querySelector(`input[name="q${index}"]:checked`);
-                const feedbackElement = questionBlock.querySelector(`#feedback-q${index}`);
-                feedbackElement.innerHTML = '';
+                const selectedRadio = questionBlock.querySelector(`input[name="q${index}"]:checked`); // Find the selected radio button for this question
+                const feedbackElement = questionBlock.querySelector(`#feedback-q${index}`); // Get the feedback div for this question
+                feedbackElement.innerHTML = ''; // Clear any previous feedback in this spot
 
-                let userAnswerText = "No answer";
-                let isCorrect = false;
+                let userAnswerText = "No answer"; // Default if nothing selected
+                let isCorrect = false; // Assume incorrect initially
 
+                // If a radio button was selected
                 if (selectedRadio) {
-                    userAnswerText = selectedRadio.dataset.choiceText;
-                    isCorrect = selectedRadio.value === 'correct';
+                    userAnswerText = selectedRadio.dataset.choiceText; // Get the text of the selected answer
+                    isCorrect = selectedRadio.value === 'correct'; // Check if the selected value is 'correct'
                 }
 
+                 // Find the text of the actual correct choice for display
                  const correctChoice = qData.choices.find(c => c.isCorrect);
-                 const correctChoiceText = correctChoice ? correctChoice.text : 'N/A';
+                 const correctChoiceText = correctChoice ? correctChoice.text : 'N/A'; // Handle potential errors
 
+                // --- Feedback Logic ---
                 if (isCorrect) {
-                    score++;
+                    score++; // Increment score
+                    // Highlight the selected (correct) answer label
                      if(selectedRadio) {
-                        selectedRadio.parentElement.classList.add('correct-answer-display');
+                        // Find the label associated with the selected radio
+                        const selectedLabel = questionBlock.querySelector(`label[for='${selectedRadio.id}']`);
+                        if(selectedLabel) selectedLabel.classList.add('correct-answer-display');
                      }
+                     // Add "Correct!" text feedback directly under the question
+                     const correctFeedbackDiv = document.createElement('div');
+                     correctFeedbackDiv.className = 'feedback-box feedback-correct'; // Use correct feedback styling
+                     correctFeedbackDiv.innerHTML = '<span class="font-semibold">Correct!</span>'; // Simple "Correct!" message
+                     feedbackElement.appendChild(correctFeedbackDiv); // Add this box to the feedback area
+
                 } else {
+                    // --- Incorrect Answer Logic ---
+                    // Create the feedback box for incorrect answer explanation
                     const feedbackDiv = document.createElement('div');
-                    feedbackDiv.className = 'feedback-box feedback-incorrect';
+                    feedbackDiv.className = 'feedback-box feedback-incorrect'; // Use incorrect feedback styling
 
+                    // Create the explanation text HTML
                     const explanationText = `<div class="explanation">${qData.explanation}</div>`;
-                    // Added quotes around the correct answer text for clarity
+                    // Set the content of the feedback box
                     feedbackDiv.innerHTML = `Incorrect. The correct answer was: "${correctChoiceText}"` + explanationText;
-                    feedbackElement.appendChild(feedbackDiv);
+                    feedbackElement.appendChild(feedbackDiv); // Add this box to the feedback area
 
+                    // Highlight the user's wrong choice label (if they selected one)
                      if (selectedRadio) {
-                         selectedRadio.parentElement.classList.add('user-incorrect-choice');
+                         const selectedLabel = questionBlock.querySelector(`label[for='${selectedRadio.id}']`);
+                         if(selectedLabel) selectedLabel.classList.add('user-incorrect-choice');
                      }
 
+                    // Highlight the actual correct choice label
                     const allRadiosInQuestion = questionBlock.querySelectorAll(`input[name="q${index}"]`);
                     allRadiosInQuestion.forEach(radio => {
                         if (radio.value === 'correct') {
-                            radio.parentElement.classList.add('correct-answer-display');
+                            const correctLabel = questionBlock.querySelector(`label[for='${radio.id}']`);
+                            if(correctLabel) correctLabel.classList.add('correct-answer-display');
                         }
                     });
 
-                    // Added quotes around answers in summary for clarity
+                    // --- Add detailed feedback to the summary section at the bottom ---
                      feedbackHtml.push(`
-                         <div class="p-4 bg-red-100 bg-opacity-30 rounded-md border border-red-300">
-                             <p class="font-semibold text-bright-red">${index + 1}. ${qData.questionText}</p> {/* Used text-bright-red */}
-                             <p class="text-bright mt-1">Your answer: "${userAnswerText}"</p> {/* Used text-bright */}
-                             <p class="text-bright-green mt-1">Correct answer: "${correctChoiceText}"</p> {/* Used text-bright-green */}
-                             <p class="text-bright-indigo mt-2 text-sm"><em>Explanation:</em> ${qData.explanation}</p> {/* Used text-bright-indigo */}
+                         <div class="p-4 bg-red-50 rounded-md border border-red-200"> {/* Light red background for summary item */}
+                             <p class="font-semibold text-feedback-summary-q">${index + 1}. ${qData.questionText}</p> {/* Dark red text */}
+                             <p class="text-feedback-summary-user mt-1">Your answer: "${userAnswerText}"</p> {/* Dark gray text */}
+                             <p class="text-feedback-summary-correct mt-1">Correct answer: "${correctChoiceText}"</p> {/* Dark green text */}
+                             <p class="text-feedback-summary-expl mt-2 text-sm"><em>Explanation:</em> ${qData.explanation}</p> {/* Medium gray text */}
                          </div>
                      `);
                 }
             });
 
-            // --- SCORE DISPLAY UPDATE ---
-            // Calculate percentage
-            const percentage = Math.round((score / NUM_QUESTIONS_TO_DISPLAY) * 100);
-            // Display raw score and percentage
-            scoreElement.textContent = `You scored ${score} out of ${NUM_QUESTIONS_TO_DISPLAY} (${percentage}%)!`;
-            // --- END SCORE DISPLAY UPDATE ---
+            // --- Display Final Score ---
+            const percentage = Math.round((score / NUM_QUESTIONS_TO_DISPLAY) * 100); // Calculate percentage
+            scoreElement.textContent = `You scored ${score} out of ${NUM_QUESTIONS_TO_DISPLAY} (${percentage}%)!`; // Display score and percentage
 
-
+            // --- Display Summary Feedback ---
             if (feedbackHtml.length > 0) {
-                 feedbackSummaryElement.innerHTML = `<h3 class="text-xl font-semibold text-bright mb-3">Review Incorrect Answers:</h3>` + feedbackHtml.join(''); // Applied text-bright
+                 // If there were incorrect answers, show the detailed summary
+                 feedbackSummaryElement.innerHTML = `<h3 class="text-xl font-semibold text-feedback-summary-header mb-3">Review Incorrect Answers:</h3>` + feedbackHtml.join('');
             } else {
-                 feedbackSummaryElement.innerHTML = `<p class="text-bright-green font-semibold feedback-correct-summary">Congratulations! You got all questions correct!</p>`; // Applied text-bright-green
+                 // If all answers were correct, show a congratulatory message
+                 feedbackSummaryElement.innerHTML = `<p class="font-semibold feedback-correct-summary">Congratulations! You got all questions correct!</p>`; // Uses specific class for styling
             }
 
+            // Show the results container and scroll to it for visibility
             resultsContainer.classList.remove('hidden');
             resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
 
         // --- Event Listeners ---
+        // Handle password submission (button click)
         passwordSubmit.addEventListener('click', handlePasswordSubmit);
+        // Handle password submission (Enter key press)
         passwordInput.addEventListener('keypress', function(event) {
             if (event.key === 'Enter') {
                 handlePasswordSubmit();
             }
         });
+        // Handle quiz submission (form submit event)
         quizForm.addEventListener('submit', handleQuizSubmit);
 
     </script>
